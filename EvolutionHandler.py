@@ -1,11 +1,6 @@
 from time import *
 from Node import *
 
-
-def config():
-    numGens = input("Number of generations.")
-
-
 class instance():
     nodes = list(())
     createdAt = time()
@@ -52,6 +47,7 @@ class firstInstance(instance):
     ballYVelocityUp = None
     ballYVelocityDown = None
     selfMoveTowardY = None
+
     def initIONodes(self):
         selfYPos = inputNode(list(()), list(()), self)
         ballXPos = inputNode(list(()), list(()), self)
@@ -69,7 +65,7 @@ class species():
     currentInstance = 0
 
     def fitness(self):
-        time() - self.currentInstance.createdAt
+        self.currentInstance.fitness = time() - self.currentInstance.createdAt
 
     def newInstance(self):
         self.fitness()
@@ -78,3 +74,32 @@ class species():
 
         if self.lastInstance.fitness > self.bestInstance[len(self.bestInstance) - 1]:
             self.bestInstances.append(self.lastInstance)
+
+    def loadInstace(self, userInput):
+        self.fitness()
+        self.lastInstance = self.currentInstance
+        self.currentInstance = self.bestInstances(int(userInput))
+
+        if self.lastInstance.fitness > self.bestInstance[len(self.bestInstance) - 1]:
+            self.bestInstances.append(self.lastInstance)
+
+def runSpecies():
+    numGens = input("Number of generations.")
+    spec = species()
+    for x in numGens:
+        spec.newInstance()
+        inst = spec.currentInstance
+
+# MAIN
+userInput = ""
+
+while userInput != "exit":
+    userInput = input(">>>")
+    if userInput == "start":
+        runSpecies()
+
+
+
+
+
+
