@@ -36,7 +36,7 @@ class instance():
 
     def mutateNewNode(self):
         if random.randrange(0, 100) <= 15:
-            self.nodes.append(Node((), (), instance=self))
+            self.nodes.append(Node((), (), self, ofp))
 
     def allNodesUTD(self):
         for i in self.nodes:
@@ -66,12 +66,12 @@ class firstInstance(instance):
     nodes = list(())
 
     def __init__(self, species):
-        self.selfYPos = inputNode(list(()), list(()), self)
-        self.ballXPos = inputNode(list(()), list(()), self)
-        self.ballYPos = inputNode(list(()), list(()), self)
-        self.ballXDir = inputNode(list(()), list(()), self)
-        self.ballYDir = inputNode(list(()), list(()), self)
-        self.selfMoveTowardY = outputNode(list(()), list(()), self)
+        self.selfYPos = inputNode(list(()), list(()), self, ofp)
+        self.ballXPos = inputNode(list(()), list(()), self, ofp)
+        self.ballYPos = inputNode(list(()), list(()), self, ofp)
+        self.ballXDir = inputNode(list(()), list(()), self, ofp)
+        self.ballYDir = inputNode(list(()), list(()), self, ofp)
+        self.selfMoveTowardY = outputNode(list(()), list(()), self, ofp)
 
         self.nodes.append(self.selfYPos)
         self.nodes.append(self.ballXPos)
@@ -133,6 +133,9 @@ currentSpecies = 0
 sys.setrecursionlimit(1000)
 threading.stack_size(67108864)
 
+
+ofp = OverflowPrevent()
+
 while userInput != "exit":
     gens = 0
     #numGens = input("Number of generations:\n")
@@ -146,6 +149,7 @@ while userInput != "exit":
         while gens <= numGens:
             currentSpecies.gameInstance.gameOver = False
             while not currentSpecies.gameInstance.gameOver:
+                ofp.amount = 0
                 currentSpecies.newInstance()
                 lastSpecies, currentSpecies = currentSpecies, species()
                 currentSpecies.currentInstance.updateNodes

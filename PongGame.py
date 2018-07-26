@@ -11,8 +11,8 @@ window_height = int(720 / 4 * 3)
 display_surf = pygame.display.set_mode((window_width, window_height))
 
 fps_clock = pygame.time.Clock()
-#fps = 2 ** 32 - 1  # Number of frames per second
-fps = 30
+fps = 2 ** 32 - 1  # Number of frames per second
+#fps = 30 # visible fps amount
 
 
 class Game():
