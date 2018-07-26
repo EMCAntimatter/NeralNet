@@ -62,14 +62,17 @@ class firstInstance(instance):
 
 class species():
     bestInstances = list(())
-    lastInstance = 0
-    currentInstance = 0
-    gameInstance = 0
+    lastInstance = None
+    currentInstance = None
+    gameInstance = None
 
     def fitness(self):
         self.currentInstance.fitness = time() - self.currentInstance.createdAt
 
     def newInstance(self):
+        if type(self.lastInstance) != instance and type(self.lastInstance) != firstInstance:
+            lastInstance = instance(self)
+
         self.fitness()
         self.lastInstance = self.currentInstance
         self.currentInstance = instance(self)
@@ -88,8 +91,8 @@ class species():
 
     def __init__(self):
         gen = 0
-        numGens = input("Number of generations.")
-        self.currentInstance = self.firstInstance()
+        numGens = input("Number of generations:\n")
+        self.currentInstance = firstInstance(self)
         self.currentInstance.initIONodes()
 
         while gen <= numGens:
