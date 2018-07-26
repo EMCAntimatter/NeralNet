@@ -64,6 +64,7 @@ class species():
     bestInstances = list(())
     lastInstance = 0
     currentInstance = 0
+    gameInstance = 0
 
     def fitness(self):
         self.currentInstance.fitness = time() - self.currentInstance.createdAt
@@ -72,6 +73,7 @@ class species():
         self.fitness()
         self.lastInstance = self.currentInstance
         self.currentInstance = instance(self)
+        self.gameInstance = Game(speed=4)
 
         if self.lastInstance.fitness > self.bestInstance[len(self.bestInstance) - 1]:
             self.bestInstances.append(self.lastInstance)
@@ -84,43 +86,41 @@ class species():
         if self.lastInstance.fitness > self.bestInstance[len(self.bestInstance) - 1]:
             self.bestInstances.append(self.lastInstance)
 
-def newSpecies():
-    gen = 0
-    numGens = input("Number of generations.")
-    spec = species()
-    inst = spec.firstInstance()
-    inst.initIONodes()
-    while gen <= numGens:
-        if gen != 0:
-            spec.newInstance()
-            inst = spec.currentInstance
-        else:
-            None
+    def __init__(self):
+        gen = 0
+        numGens = input("Number of generations.")
+        self.currentInstance = self.firstInstance()
+        self.currentInstance.initIONodes()
+
+        while gen <= numGens:
+
+
+            if gen != 0:
+                self.newInstance()
+            else:
+                None
 
 
 
-        ++gen
+            ++gen
+    def updateIOVal(self):
+        self.currentInstance.selfYPos = self.gameInstance.paddles['user'].rect.y
+        self.currentInstance.ballXPos = self.gameInstance.ball.x
+        self.currentInstance.ballYPos = self.gameInstance.ball.y
+        self.currentInstance.ballXDir = self.gameInstance.ball.dir_x
+        self.currentInstance.ballYDir = self.gameInstance.ball.dir_y
+        self.gameInstance.userMoveTo = instance.nodes['selfMoveTowardY'].outputVal
 
-class interface():
-
-    def updateIOVal(instance, game):
-        instance.selfYPos = game.paddles['user'].rect.y
-        instance.ballXPos = game.ball.x
-        instance.ballYPos = game.ball.y
-        instance.ballXDir = game.ball.dir_x
-        instance.ballYDir = game.ball.dir_y
-        game.userMoveTo = instance.nodes['selfMoveTowardY'].outputVal
-
-
-
-
-# MAIN
 userInput = ""
+lastSpecies = 0
+currentSpecies = 0
+
+
 
 while userInput != "exit":
     userInput = input(">>>")
     if userInput == "start":
-        newSpecies()
+        lastSpecies, currentSpecies = currentSpecies, species()
 
 
 

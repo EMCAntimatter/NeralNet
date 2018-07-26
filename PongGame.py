@@ -57,7 +57,7 @@ class Game():
     def update(self):
         self.ball.move()
         self.paddles['computer'].move()
-        self.paddles['user'].move(self.userMoveTo)
+        self.paddles['user'].move([0, self.userMoveTo])
 
         if self.ball.hit_paddle(self.paddles['computer']):
             self.ball.bounce('x')
@@ -211,12 +211,10 @@ class Scoreboard():
 
 
 # Main function
-def main():
+def main(game):
     pygame.init()
     pygame.display.set_caption('Pong')
     pygame.mouse.set_visible(0)  # make cursor invisible
-    game = Game(speed=4)
-
     while True:  # main game loop
         for event in pygame.event.get():
             if event.type == QUIT:
