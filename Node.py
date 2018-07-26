@@ -2,10 +2,9 @@ from random import random
 
 class Node:
     instance = None
-
+    outputVal = 0
     def __init__(self, connections, connectionStr, instance):
         self.instance = instance
-        self.instance = self.instance
         self.instance.nodes = list(())
         index = len(self.instance.nodes)
         self.instance.nodes.append(self)
@@ -62,9 +61,10 @@ class Node:
                 self.connectionStr[i] = 0
 
     def createOutput(self):
+        self.outputVal = 0
         for i in len(self.instance.nodes) - 1:
             if self.isConnectedTo(self.instance.nodes(i)):
-                self.outVal += self.instance.nodes(i).outVal * self.instance.nodes(i).connectionStr(i)
+                self.outputVal += self.instance.nodes(i).outVal * self.instance.nodes(i).connectionStr(i)
 
 
 class inputNode(Node):
