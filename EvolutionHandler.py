@@ -1,26 +1,28 @@
 from time import *
 from Node import *
 from PongGame import *
+import random
 
 class instance():
     nodes = list(())
     createdAt = time()
     fitness = 0  # edited on game over
-
     def mutateNewNode(self):
-        if random(0, 100) <= 15:
-            self.nodes[len(self.nodes)] = Node
+        if random.randrange(0, 100) <= 15:
+            self.nodes.append(Node)
 
     def __init__(self, species):
-
-        nodes = species.lastInstance.nodes
+        if species.lastInstance != None:
+            nodes = species.lastInstance.nodes
+        else:
+            nodes = list(())
 
         self.mutateNewNode()
 
         for node in nodes:
-            node.mutateNodeConnection()
+            node.mutateNodeConnection(node)
         for node in nodes:
-            node.mutateConnectionStrength()
+            node.mutateConnectionStrength(node)
 
     def allNodesUTD(self):
         for i in self.nodes:
@@ -70,9 +72,6 @@ class species():
         self.currentInstance.fitness = time() - self.currentInstance.createdAt
 
     def newInstance(self):
-        if type(self.lastInstance) != instance and type(self.lastInstance) != firstInstance:
-            lastInstance = instance(self)
-
         self.fitness()
         self.lastInstance = self.currentInstance
         self.currentInstance = instance(self)
@@ -90,8 +89,10 @@ class species():
             self.bestInstances.append(self.lastInstance)
 
     def __init__(self):
+        self.lastInstance = instance(self)
         gen = 0
         numGens = input("Number of generations:\n")
+        numGens = int(numGens)
         self.currentInstance = firstInstance(self)
         self.currentInstance.initIONodes()
 
@@ -107,12 +108,12 @@ class species():
 
             ++gen
     def updateIOVal(self):
-        self.currentInstance.selfYPos = self.gameInstance.paddles['user'].rect.y
-        self.currentInstance.ballXPos = self.gameInstance.ball.x
-        self.currentInstance.ballYPos = self.gameInstance.ball.y
-        self.currentInstance.ballXDir = self.gameInstance.ball.dir_x
-        self.currentInstance.ballYDir = self.gameInstance.ball.dir_y
-        self.gameInstance.userMoveTo = instance.nodes['selfMoveTowardY'].outputVal
+        self.currentInstance.selfYPos.inputVal = self.gameInstance.paddles['user'].rect.y
+        self.currentInstance.ballXPos.inputVal = self.gameInstance.ball.x
+        self.currentInstance.ballYPos.inputVal = self.gameInstance.ball.y
+        self.currentInstance.ballXDir.inputVal = self.gameInstance.ball.dir_x
+        self.currentInstance.ballYDir.inputVal = self.gameInstance.ball.dir_y
+        self.gameInstance.userMoveTo.inputVal = instance.nodes['selfMoveTowardY'].outputVal
 
 userInput = ""
 lastSpecies = 0
@@ -121,9 +122,11 @@ currentSpecies = 0
 
 
 while userInput != "exit":
-    userInput = input(">>>")
+    #userInput = input(">>>")
+    userInput = "start" #delete after testing
     if userInput == "start":
         lastSpecies, currentSpecies = currentSpecies, species()
+        currentSpecies.updateNodes
 
 
 

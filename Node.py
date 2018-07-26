@@ -1,4 +1,4 @@
-from random import random
+from random import *
 
 class Node:
     instance = None
@@ -38,18 +38,18 @@ class Node:
         return True
 
     def mutateNodeConnection(self):
-        rand = random(0, 100)
+        rand = random.randrange(0, 100)
         if rand <= 15:
             # del node
-            i = random(0, len(self.connections) - 1)
+            i = random.randrange(0, len(self.connections) - 1)
             del self.connections[i]
             del self.connectionStr[i]
         elif rand >= 85:
             # add node
-            i = random(0, len(self.instance.nodes) - 1)
+            i = random.randrange(0, len(self.instance.nodes) - 1)
             loopCounter = 0
             while not (self.isConnectedTo(self.instance.nodes(i))) and loopCounter <= len(self.instance.nodes) * 1.75:
-                i = random(0, len(self.instance.nodes) - 1)
+                i = random.randrange(0, len(self.instance.nodes) - 1)
             self.newConnection(self.instance.nodes(i))
 
     def mutateConnectionStrength(self):
