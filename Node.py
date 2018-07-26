@@ -1,8 +1,10 @@
-from random import *
+import random
 
-class Node:
+class Node():
     instance = None
     outputVal = 0
+    connections = list(())
+    connectionStr = list(())
     def __init__(self, connections, connectionStr, instance):
         self.instance = instance
         self.instance.nodes = list(())
@@ -21,10 +23,14 @@ class Node:
 
     def isConnectedTo(self, node):
         if not node is self:
-            if node in self.connections:
-                return True
-            if self in node.connections:
-                return True
+            for n in self.connections:
+                if n is node or n.isConnectedTo(node):
+                    return True
+                    break
+            for n in node.connections:
+                if n is self or n.isConnectedTo(self):
+                    return True
+                    break
         else:
             return False
 
@@ -41,19 +47,25 @@ class Node:
         rand = random.randrange(0, 100)
         if rand <= 15:
             # del node
-            i = random.randrange(0, len(self.connections) - 1)
-            del self.connections[i]
-            del self.connectionStr[i]
+            if len(self.connections) > 1:
+                i = random.randrange(0, len(self.connections) - 1)
+                del self.connections[i]
+                del self.connectionStr[i]
         elif rand >= 85:
             # add node
-            i = random.randrange(0, len(self.instance.nodes) - 1)
-            loopCounter = 0
-            while not (self.isConnectedTo(self.instance.nodes(i))) and loopCounter <= len(self.instance.nodes) * 1.75:
+            if len(self.instance.nodes) - 1 > 1:
                 i = random.randrange(0, len(self.instance.nodes) - 1)
-            self.newConnection(self.instance.nodes(i))
+            else:
+                i = 0
+            loopCounter = 0
+            while not (self.isConnectedTo(self.instance.nodes[i])) and loopCounter <= len(self.instance.nodes) * 1.75:
+                i = random.randrange(0, len(self.instance.nodes) - 1)
+                loopCounter += 1
+            if loopCounter != len(self.instance.nodes) * 1.75:
+                self.newConnection(self.instance.nodes[i])
 
     def mutateConnectionStrength(self):
-        for i in len(self.connectionStr) - 1:
+        for i in range(len(self.connectionStr) - 1):
             toMutate = random.normalvariate(self.connectionStr[i], .5)
             if toMutate >= 0:
                 self.connectionStr[i] = toMutate

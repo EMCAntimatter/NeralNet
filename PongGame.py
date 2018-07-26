@@ -199,7 +199,8 @@ class Scoreboard():
         self.score = score
         self.x = x
         self.y = y
-        self.font = pygame.font.Font('freesansbold.ttf', font_size)
+        pygame.font.init()
+        self.font = pygame.font.Font(pygame.font.get_default_font(), font_size)
 
     # Displays the current score on the screen
     def display(self, score):
@@ -215,16 +216,16 @@ def main(game):
     pygame.init()
     pygame.display.set_caption('Pong')
     pygame.mouse.set_visible(0)  # make cursor invisible
-    while True:  # main game loop
+    while not game.gameOver:  # main game loop
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
-
         game.update()
         pygame.display.update()
         fps_clock.tick(fps)
 
+    pygame.quit()
+    sys.exit()
 
-if __name__ == '__main__':
-    main()
+

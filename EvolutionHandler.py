@@ -3,26 +3,39 @@ from Node import *
 from PongGame import *
 import random
 
+
 class instance():
-    nodes = list(())
     createdAt = time()
     fitness = 0  # edited on game over
-    def mutateNewNode(self):
-        if random.randrange(0, 100) <= 15:
-            self.nodes.append(Node)
+    nodes = list(())
+
+    selfYPos = None
+    ballXPos = None
+    ballYPos = None
+    ballXDir = None
+    ballYDir = None
+    selfMoveTowardY = None
 
     def __init__(self, species):
-        if species.lastInstance != None:
-            nodes = species.lastInstance.nodes
-        else:
-            nodes = list(())
+        nodes = species.lastInstance.nodes
+
+        selfYPos = species.lastInstance.selfYPos
+        ballXPos = species.lastInstance.ballXPos
+        ballYPos = species.lastInstance.ballYPos
+        ballXDir = species.lastInstance.ballXDir
+        ballYDir = species.lastInstance.ballYDir
+        selfMoveTowardY = species.lastInstance.selfMoveTowardY
 
         self.mutateNewNode()
 
         for node in nodes:
-            node.mutateNodeConnection(node)
+            node.mutateNodeConnection()
         for node in nodes:
-            node.mutateConnectionStrength(node)
+            node.mutateConnectionStrength()
+
+    def mutateNewNode(self):
+        if random.randrange(0, 100) <= 15:
+            self.nodes.append(Node((), (), instance=self))
 
     def allNodesUTD(self):
         for i in self.nodes:
@@ -45,21 +58,26 @@ class firstInstance(instance):
     selfYPos = None
     ballXPos = None
     ballYPos = None
-    ballXVelocityRight = None
-    ballXVelocityLeft = None
-    ballYVelocityUp = None
-    ballYVelocityDown = None
+    ballXDir = None
+    ballYDir = None
     selfMoveTowardY = None
 
-    def initIONodes(self):
+    nodes = list(())
+
+    def __init__(self, species):
         self.selfYPos = inputNode(list(()), list(()), self)
         self.ballXPos = inputNode(list(()), list(()), self)
         self.ballYPos = inputNode(list(()), list(()), self)
-        self.ballXVelocityRight = inputNode(list(()), list(()), self)
-        self.ballXVelocityLeft = inputNode(list(()), list(()), self)
-        self.ballYVelocityUp = inputNode(list(()), list(()), self)
-        self.ballYVelocityDown = inputNode(list(()), list(()), self)
+        self.ballXDir = inputNode(list(()), list(()), self)
+        self.ballYDir = inputNode(list(()), list(()), self)
         self.selfMoveTowardY = outputNode(list(()), list(()), self)
+
+        self.nodes.append(self.selfYPos)
+        self.nodes.append(self.ballXPos)
+        self.nodes.append(self.ballYPos)
+        self.nodes.append(self.ballXDir)
+        self.nodes.append(self.ballYDir)
+        self.nodes.append(self.selfMoveTowardY)
 
 
 class species():
@@ -76,38 +94,25 @@ class species():
         self.lastInstance = self.currentInstance
         self.currentInstance = instance(self)
         self.gameInstance = Game(speed=4)
-
-        if self.lastInstance.fitness > self.bestInstance[len(self.bestInstance) - 1]:
-            self.bestInstances.append(self.lastInstance)
+        if len(self.bestInstances) > 0:
+            if self.lastInstance.fitness > self.bestInstances[len(self.bestInstances) - 1]:
+                print("New Best Fitness: " + self.lastInstances.fitness)
+                self.bestInstances.append(self.lastInstance)
 
     def loadInstace(self, userInput):
         self.fitness()
         self.lastInstance = self.currentInstance
         self.currentInstance = self.bestInstances(int(userInput))
 
-        if self.lastInstance.fitness > self.bestInstance[len(self.bestInstance) - 1]:
+        if self.lastInstance.fitness > self.bestInstances[len(self.bestInstances) - 1]:
             self.bestInstances.append(self.lastInstance)
 
     def __init__(self):
-        self.lastInstance = instance(self)
-        gen = 0
-        numGens = input("Number of generations:\n")
-        numGens = int(numGens)
-        self.currentInstance = firstInstance(self)
-        self.currentInstance.initIONodes()
+        self.lastInstance = firstInstance(self)
+        self.currentInstance = instance(self)
+        self.gameInstance = Game(speed=4)
 
-        while gen <= numGens:
-
-
-            if gen != 0:
-                self.newInstance()
-            else:
-                None
-
-
-
-            ++gen
-    def updateIOVal(self):
+    def updateIOVals(self):
         self.currentInstance.selfYPos.inputVal = self.gameInstance.paddles['user'].rect.y
         self.currentInstance.ballXPos.inputVal = self.gameInstance.ball.x
         self.currentInstance.ballYPos.inputVal = self.gameInstance.ball.y
@@ -115,21 +120,28 @@ class species():
         self.currentInstance.ballYDir.inputVal = self.gameInstance.ball.dir_y
         self.gameInstance.userMoveTo.inputVal = instance.nodes['selfMoveTowardY'].outputVal
 
+
 userInput = ""
 lastSpecies = 0
 currentSpecies = 0
 
-
-
 while userInput != "exit":
-    #userInput = input(">>>")
-    userInput = "start" #delete after testing
+    gens = 0
+    #numGens = input("Number of generations:\n")
+    numGens = 1
+    numGens = int(numGens)
+    # userInput = input(">>>")
+    userInput = "start"  # delete after testing
+    lastSpecies, currentSpecies = currentSpecies, species()
+    currentSpecies.gameInstance = Game(speed=4)
     if userInput == "start":
-        lastSpecies, currentSpecies = currentSpecies, species()
-        currentSpecies.updateNodes
-
-
-
-
-
-
+        while not currentSpecies.gameInstance.gameOver:
+            while gens <= numGens:
+                currentSpecies.newInstance()
+                lastSpecies, currentSpecies = currentSpecies, species()
+                currentSpecies.currentInstance.updateNodes
+                currentSpecies.updateIOVals()
+                main()
+                ++gens
+    elif userInput == "load":
+        currentSpecies.loadInstace(input("Enter index number or enter best"))
