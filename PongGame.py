@@ -11,7 +11,8 @@ window_height = int(720 / 4 * 3)
 display_surf = pygame.display.set_mode((window_width, window_height))
 
 fps_clock = pygame.time.Clock()
-fps = 2 ** 32  # Number of frames per second
+#fps = 2 ** 32 - 1  # Number of frames per second
+fps = 30
 
 
 class Game():
@@ -34,9 +35,9 @@ class Game():
         paddle_width = self.line_thickness
         user_paddle_x = 20
         computer_paddle_x = window_width - paddle_width - 20
-        self.paddles['user'] = Paddle(user_paddle_x,
+        self.paddles[0] = Paddle(user_paddle_x,
                                       paddle_width, paddle_height)
-        self.paddles['computer'] = AutoPaddle(computer_paddle_x,
+        self.paddles[1] = AutoPaddle(computer_paddle_x,
                                               paddle_width, paddle_height,
                                               self.ball, self.speed)
         self.scoreboard = Scoreboard(0)
@@ -56,12 +57,12 @@ class Game():
 
     def update(self):
         self.ball.move()
-        self.paddles['computer'].move()
-        self.paddles['user'].move([0, self.userMoveTo])
+        self.paddles[1].move()
+        self.paddles[0].move([0, self.userMoveTo])
 
-        if self.ball.hit_paddle(self.paddles['computer']):
+        if self.ball.hit_paddle(self.paddles[1]):
             self.ball.bounce('x')
-        elif self.ball.hit_paddle(self.paddles['user']):
+        elif self.ball.hit_paddle(self.paddles[0]):
             self.ball.bounce('x')
             self.score += 1
         elif self.ball.pass_computer():
@@ -72,8 +73,8 @@ class Game():
 
         self.draw_arena()
         self.ball.draw()
-        self.paddles['user'].draw()
-        self.paddles['computer'].draw()
+        self.paddles[0].draw()
+        self.paddles[1].draw()
         self.scoreboard.display(self.score)
 
 
@@ -225,7 +226,7 @@ def main(game):
         pygame.display.update()
         fps_clock.tick(fps)
 
-    pygame.quit()
-    sys.exit()
+    #pygame.quit()
+    #sys.exit()
 
 

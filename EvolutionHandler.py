@@ -1,3 +1,4 @@
+import threading
 from time import *
 from Node import *
 from PongGame import *
@@ -19,12 +20,12 @@ class instance():
     def __init__(self, species):
         nodes = species.lastInstance.nodes
 
-        selfYPos = species.lastInstance.selfYPos
-        ballXPos = species.lastInstance.ballXPos
-        ballYPos = species.lastInstance.ballYPos
-        ballXDir = species.lastInstance.ballXDir
-        ballYDir = species.lastInstance.ballYDir
-        selfMoveTowardY = species.lastInstance.selfMoveTowardY
+        self.selfYPos = species.lastInstance.selfYPos
+        self.ballXPos = species.lastInstance.ballXPos
+        self.ballYPos = species.lastInstance.ballYPos
+        self.ballXDir = species.lastInstance.ballXDir
+        self.ballYDir = species.lastInstance.ballYDir
+        self.selfMoveTowardY = species.lastInstance.selfMoveTowardY
 
         self.mutateNewNode()
 
@@ -91,6 +92,9 @@ class species():
 
     def newInstance(self):
         self.fitness()
+        if self.bestInstances.__len__() > 0:
+            if self.currentInstance.fitness < self.bestInstances[self.bestInstances.__len__() -1]:
+                self.lastInstance = self.bestInstances[self.bestInstances.__len__() -1]
         self.lastInstance = self.currentInstance
         self.currentInstance = instance(self)
         self.gameInstance = Game(speed=4)
@@ -113,17 +117,21 @@ class species():
         self.gameInstance = Game(speed=4)
 
     def updateIOVals(self):
-        self.currentInstance.selfYPos.inputVal = self.gameInstance.paddles['user'].rect.y
+        self.currentInstance.selfYPos.inputVal = self.gameInstance.paddles[0].rect.y
         self.currentInstance.ballXPos.inputVal = self.gameInstance.ball.x
         self.currentInstance.ballYPos.inputVal = self.gameInstance.ball.y
         self.currentInstance.ballXDir.inputVal = self.gameInstance.ball.dir_x
         self.currentInstance.ballYDir.inputVal = self.gameInstance.ball.dir_y
-        self.gameInstance.userMoveTo.inputVal = instance.nodes['selfMoveTowardY'].outputVal
+        self.gameInstance.userMoveTo = -self.currentInstance.selfMoveTowardY.outputVal
 
 
 userInput = ""
 lastSpecies = 0
 currentSpecies = 0
+
+#Might want to get rid of this, could stack overflow
+sys.setrecursionlimit(1000)
+threading.stack_size(67108864)
 
 while userInput != "exit":
     gens = 0
@@ -135,13 +143,14 @@ while userInput != "exit":
     lastSpecies, currentSpecies = currentSpecies, species()
     currentSpecies.gameInstance = Game(speed=4)
     if userInput == "start":
-        while not currentSpecies.gameInstance.gameOver:
-            while gens <= numGens:
+        while gens <= numGens:
+            currentSpecies.gameInstance.gameOver = False
+            while not currentSpecies.gameInstance.gameOver:
                 currentSpecies.newInstance()
                 lastSpecies, currentSpecies = currentSpecies, species()
                 currentSpecies.currentInstance.updateNodes
                 currentSpecies.updateIOVals()
-                main()
-                ++gens
+                main(currentSpecies.gameInstance)
+            ++gens
     elif userInput == "load":
         currentSpecies.loadInstace(input("Enter index number or enter best"))

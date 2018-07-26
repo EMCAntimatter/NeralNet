@@ -15,20 +15,21 @@ class Node():
         connectionStr = connectionStr
 
     def newConnection(self, node):
-        if not (self.isConnectedTo(node) and node.isConnectedTo(self) and node is self and type(node) is outputNode):
+        if not (self.isConnectedTo(node, 0) and node.isConnectedTo(self, 0) and node is self and type(node) is outputNode):
             str = random.normalvariate(1, 1)
 
             self.connections.append(node)
             self.connectionStr.append(str)
 
-    def isConnectedTo(self, node):
+    def isConnectedTo(self, node, depth):
         if not node is self:
             for n in self.connections:
-                if n is node or n.isConnectedTo(node):
+                if (n is node or n.isConnectedTo(node, depth + 1)) and depth <= 10:
                     return True
                     break
+
             for n in node.connections:
-                if n is self or n.isConnectedTo(self):
+                if (n is self or n.isConnectedTo(self, depth + 1)) and depth <= 10:
                     return True
                     break
         else:
@@ -58,8 +59,13 @@ class Node():
             else:
                 i = 0
             loopCounter = 0
-            while not (self.isConnectedTo(self.instance.nodes[i])) and loopCounter <= len(self.instance.nodes) * 1.75:
-                i = random.randrange(0, len(self.instance.nodes) - 1)
+            while not (self.isConnectedTo(self.instance.nodes[i], 0)) and loopCounter <= len(self.instance.nodes) * 1.75:
+                if self.instance.nodes.__len__() > 0:
+                    i = random.randrange(0, self.instance.nodes.__len__() - 1)
+                    break
+                else:
+                    loopCounter == len(self.instance.nodes) * 1.75
+                    break
                 loopCounter += 1
             if loopCounter != len(self.instance.nodes) * 1.75:
                 self.newConnection(self.instance.nodes[i])
