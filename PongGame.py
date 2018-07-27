@@ -55,7 +55,10 @@ class Game():
                          (int(window_width / 2), window_height),
                          int(self.line_thickness / 4))
 
-    def update(self):
+    def update(self, currentSpecies):
+        currentSpecies.currentInstance.updateNodes
+        currentSpecies.updateIOVals()
+
         self.ball.move()
         self.paddles[1].move()
         self.paddles[0].move([0, self.userMoveTo])
@@ -213,7 +216,7 @@ class Scoreboard():
 
 
 # Main function
-def main(game):
+def main(game, species):
     pygame.init()
     pygame.display.set_caption('Pong')
     pygame.mouse.set_visible(0)  # make cursor invisible
@@ -222,7 +225,7 @@ def main(game):
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
-        game.update()
+        game.update(species)
         pygame.display.update()
         fps_clock.tick(fps)
 

@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1a23df24-c8d6-4f73-9e1c-4b4ae3cdf04a" name="Default" comment="&quot;&quot;">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EvolutionHandler.py" beforeDir="false" afterPath="$PROJECT_DIR$/EvolutionHandler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Node.py" beforeDir="false" afterPath="$PROJECT_DIR$/DefNode.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -27,14 +25,14 @@
         <counts>
           <entry key="Python Console" value="6" />
           <entry key="dummy" value="5" />
-          <entry key="py" value="4795" />
+          <entry key="py" value="4807" />
           <entry key="txt" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="8" />
-          <entry key="Python" value="4801" />
+          <entry key="Python" value="4813" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -54,7 +52,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DefNode.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
+            <state relative-caret-position="-442">
               <caret line="31" selection-start-line="31" selection-end-line="31" />
               <folding>
                 <marker date="1532695383736" expanded="false" signature="3162:3165" ph="..." />
@@ -66,11 +64,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/EvolutionHandler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="322">
-              <caret line="125" column="18" lean-forward="true" selection-start-line="125" selection-start-column="18" selection-end-line="125" selection-end-column="18" />
+            <state relative-caret-position="158">
+              <caret line="120" selection-start-line="120" selection-end-line="120" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
-                <marker date="1532695051711" expanded="true" signature="1627:1994" ph="..." />
+                <marker date="1532697289838" expanded="true" signature="1627:1994" ph="..." />
               </folding>
             </state>
           </provider>
@@ -151,8 +149,8 @@
         <option value="$PROJECT_DIR$/Intranet.py" />
         <option value="$PROJECT_DIR$/PongGame.py" />
         <option value="$PROJECT_DIR$/Node.py" />
-        <option value="$PROJECT_DIR$/EvolutionHandler.py" />
         <option value="$PROJECT_DIR$/DefNode.py" />
+        <option value="$PROJECT_DIR$/EvolutionHandler.py" />
       </list>
     </option>
   </component>
@@ -352,15 +350,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18018967" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286334" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49894625" visible="true" weight="0.3286334" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3991323" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49894625" weight="0.3286334" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.3991323" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.329718" />
@@ -388,6 +385,16 @@
           <url>file://$PROJECT_DIR$/EvolutionHandler.py</url>
           <line>120</line>
           <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EvolutionHandler.py</url>
+          <line>147</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EvolutionHandler.py</url>
+          <line>53</line>
+          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -433,7 +440,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/DefNode.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
+        <state relative-caret-position="-442">
           <caret line="31" selection-start-line="31" selection-end-line="31" />
           <folding>
             <marker date="1532695383736" expanded="false" signature="3162:3165" ph="..." />
@@ -443,11 +450,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/EvolutionHandler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="125" column="18" lean-forward="true" selection-start-line="125" selection-start-column="18" selection-end-line="125" selection-end-column="18" />
+        <state relative-caret-position="158">
+          <caret line="120" selection-start-line="120" selection-end-line="120" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
-            <marker date="1532695051711" expanded="true" signature="1627:1994" ph="..." />
+            <marker date="1532697289838" expanded="true" signature="1627:1994" ph="..." />
           </folding>
         </state>
       </provider>

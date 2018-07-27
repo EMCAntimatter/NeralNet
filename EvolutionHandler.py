@@ -118,7 +118,7 @@ class species():
         self.currentInstance.ballYPos.inputVal = self.gameInstance.ball.y
         self.currentInstance.ballXDir.inputVal = self.gameInstance.ball.dir_x
         self.currentInstance.ballYDir.inputVal = self.gameInstance.ball.dir_y
-        self.gameInstance.userMoveTo = -self.currentInstance.selfMoveTowardY.outputVal
+        self.gameInstance.userMoveTo = self.currentInstance.selfMoveTowardY.outputVal
 
 
 userInput = ""
@@ -145,9 +145,7 @@ while userInput != "exit":
                 overflowPreventer = 0
                 currentSpecies.newInstance()
                 lastSpecies, currentSpecies = currentSpecies, species()
-                currentSpecies.currentInstance.updateNodes
-                currentSpecies.updateIOVals()
-                main(currentSpecies.gameInstance)
+                main(currentSpecies.gameInstance, currentSpecies)
             ++gens
     elif userInput == "load":
         currentSpecies.loadInstace(input("Enter index number or enter best"))
