@@ -1,8 +1,11 @@
+import random
 import threading
 from time import *
-from Node import *
+
+import DefNode
+from DefNode import inputNode
+from DefNode import *
 from PongGame import *
-import random
 
 
 class instance():
@@ -36,7 +39,7 @@ class instance():
 
     def mutateNewNode(self):
         if random.randrange(0, 100) <= 15:
-            self.nodes.append(Node((), (), self, ofp))
+            self.nodes.append(Node((), (), self))
 
     def allNodesUTD(self):
         for i in self.nodes:
@@ -56,22 +59,15 @@ class instance():
 
 class firstInstance(instance):
     # Input and output names and amounts must be manually edited for now
-    selfYPos = None
-    ballXPos = None
-    ballYPos = None
-    ballXDir = None
-    ballYDir = None
-    selfMoveTowardY = None
-
     nodes = list(())
 
     def __init__(self, species):
-        self.selfYPos = inputNode(list(()), list(()), self, ofp)
-        self.ballXPos = inputNode(list(()), list(()), self, ofp)
-        self.ballYPos = inputNode(list(()), list(()), self, ofp)
-        self.ballXDir = inputNode(list(()), list(()), self, ofp)
-        self.ballYDir = inputNode(list(()), list(()), self, ofp)
-        self.selfMoveTowardY = outputNode(list(()), list(()), self, ofp)
+        self.selfYPos = inputNode(list(()), list(()), self)
+        self.ballXPos = inputNode(list(()), list(()), self)
+        self.ballYPos = inputNode(list(()), list(()), self)
+        self.ballXDir = inputNode(list(()), list(()), self)
+        self.ballYDir = inputNode(list(()), list(()), self)
+        self.selfMoveTowardY = outputNode(list(()), list(()), self)
 
         self.nodes.append(self.selfYPos)
         self.nodes.append(self.ballXPos)
@@ -133,9 +129,6 @@ currentSpecies = 0
 sys.setrecursionlimit(1000)
 threading.stack_size(67108864)
 
-
-ofp = OverflowPrevent()
-
 while userInput != "exit":
     gens = 0
     #numGens = input("Number of generations:\n")
@@ -149,7 +142,7 @@ while userInput != "exit":
         while gens <= numGens:
             currentSpecies.gameInstance.gameOver = False
             while not currentSpecies.gameInstance.gameOver:
-                ofp.amount = 0
+                overflowPreventer = 0
                 currentSpecies.newInstance()
                 lastSpecies, currentSpecies = currentSpecies, species()
                 currentSpecies.currentInstance.updateNodes

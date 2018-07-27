@@ -1,38 +1,40 @@
 import random
 
+overflowPreventer = 0
+foundConnection = False
+
 class Node():
     instance = None
     outputVal = 0
-    connections = list(())
-    connectionStr = list(())
+    connections = ()
+    connectionStr = ()
     ofp = 0
-    def __init__(self, connections, connectionStr, instance, ofp):
-        self.ofp = ofp
+    updated = False
+
+    def __init__(self, connections, connectionStr, instance):
         self.instance = instance
         self.instance.nodes = list(())
-        index = len(self.instance.nodes)
         self.instance.nodes.append(self)
-        updated = False
-        connections = connections
-        connectionStr = connectionStr
+        self.connections = list(connections)
+        self.connectionStr = list(connectionStr)
 
     def newConnection(self, node):
-        if not (self.isConnectedTo(node, self.ofp) and node.isConnectedTo(self, self.ofp) and node is self and type(node) is outputNode):
+        self.foundConnection = False
+        if not (self.isConnectedTo(node) and node.isConnectedTo(self) and node is self and type(node) is outputNode):
             str = random.normalvariate(1, 1)
-
             self.connections.append(node)
             self.connectionStr.append(str)
 
-    def isConnectedTo(self, node, ofp):
-        if not (node is self) and ofp.amount <= 900:
-            ofp.amount += 1
+    def isConnectedTo(self, node):
+        if not (node is self) and overflowPreventer <= 900 and not foundConnection:
+            ++overflowPreventer
             for n in self.connections:
-                if (n is node or n.isConnectedTo(node, ofp)):
+                if (n is node or n.isConnectedTo(node)):
                     return True
                     break
 
             for n in node.connections:
-                if (n is self or n.isConnectedTo(self, ofp)):
+                if (n is self or n.isConnectedTo(self)):
                     return True
                     break
         else:
@@ -62,7 +64,7 @@ class Node():
             else:
                 i = 0
             loopCounter = 0
-            while not (self.isConnectedTo(self.instance.nodes[i], self.ofp)) and loopCounter <= len(self.instance.nodes) * 1.75:
+            while not (self.isConnectedTo(self.instance.nodes[i])) and loopCounter <= len(self.instance.nodes) * 1.75:
                 if self.instance.nodes.__len__() > 1:
                     i = random.randrange(0, self.instance.nodes.__len__() - 1)
                     break
@@ -87,8 +89,9 @@ class Node():
             if self.isConnectedTo(self.instance.nodes(i)):
                 self.outputVal += self.instance.nodes(i).outVal * self.instance.nodes(i).connectionStr(i)
 
-class OverflowPrevent():
-    amount = 0
+
+
+
 
 class inputNode(Node):
     inputVal = 0  # changed in gameloop
@@ -96,14 +99,9 @@ class inputNode(Node):
     def newConnection(self, node):
         None
 
+
 class outputNode(Node):
     None
-
-
-
-
-
-
 
 # test code
 # node = Node((), ())
