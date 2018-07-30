@@ -85,6 +85,7 @@ class species():
 
     def fitness(self):
         self.currentInstance.fitness = time() - self.currentInstance.createdAt
+        print(self.currentInstance.fitness)
 
     def newInstance(self):
         self.fitness()
@@ -99,10 +100,10 @@ class species():
                 print("New Best Fitness: " + self.lastInstances.fitness)
                 self.bestInstances.append(self.lastInstance)
 
-    def loadInstace(self, userInput):
+    def loadInstace(self, index):
         self.fitness()
         self.lastInstance = self.currentInstance
-        self.currentInstance = self.bestInstances(int(userInput))
+        self.currentInstance = self.bestInstances(index)
 
         if self.lastInstance.fitness > self.bestInstances[len(self.bestInstances) - 1]:
             self.bestInstances.append(self.lastInstance)
@@ -118,6 +119,9 @@ class species():
         self.currentInstance.ballYPos.inputVal = self.gameInstance.ball.y
         self.currentInstance.ballXDir.inputVal = self.gameInstance.ball.dir_x
         self.currentInstance.ballYDir.inputVal = self.gameInstance.ball.dir_y
+        self.currentInstance.selfMoveTowardY.createOutput()
+        #print(self.currentInstance.selfMoveTowardY.outputVal)
+        print(self.currentInstance.selfMoveTowardY.connections)
         self.gameInstance.userMoveTo = self.currentInstance.selfMoveTowardY.outputVal
 
 
@@ -148,4 +152,8 @@ while userInput != "exit":
                 main(currentSpecies.gameInstance, currentSpecies)
             ++gens
     elif userInput == "load":
-        currentSpecies.loadInstace(input("Enter index number or enter best"))
+        userInput = input("Enter index number or enter best")
+        if userInput == "best":
+            currentSpecies.loadInstace(currentSpecies.bestInstances.__len__() - 1)
+        else:
+            currentSpecies.loadInstace(int(userInput))

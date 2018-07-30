@@ -229,7 +229,5 @@ def main(game, species):
         pygame.display.update()
         fps_clock.tick(fps)
 
-    #pygame.quit()
-    #sys.exit()
-
+    print("Game Over")
 

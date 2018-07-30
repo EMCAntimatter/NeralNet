@@ -50,14 +50,14 @@ class Node():
         return True
 
     def mutateNodeConnection(self):
-        rand = random.randrange(0, 100)
-        if rand <= 15:
-            # del node
-            if len(self.connections) > 1:
-                i = random.randrange(0, len(self.connections) - 1)
-                del self.connections[i]
-                del self.connectionStr[i]
-        elif rand >= 85:
+        rand = random.randrange(0, 1000)
+        #if rand <= 10:
+        #    # del node
+        #   if len(self.connections) > 1:
+        #       i = random.randrange(0, len(self.connections) - 1)
+        #       del self.connections[i]
+        #      del self.connectionStr[i]
+        if rand >= 850:
             # add node
             if len(self.instance.nodes) - 1 > 1:
                 i = random.randrange(0, len(self.instance.nodes) - 1)
@@ -85,13 +85,8 @@ class Node():
 
     def createOutput(self):
         self.outputVal = 0
-        for i in len(self.instance.nodes) - 1:
-            if self.isConnectedTo(self.instance.nodes(i)):
-                self.outputVal += self.instance.nodes(i).outVal * self.instance.nodes(i).connectionStr(i)
-
-
-
-
+        for i in range(len(self.connections) - 1):
+            self.outputVal += self.connections[i].outputVal * self.connectionStr[i]
 
 class inputNode(Node):
     inputVal = 0  # changed in gameloop
